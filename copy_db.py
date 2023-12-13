@@ -6,7 +6,7 @@ import mysql.connector
 #                               #
 #################################
 
-REMOTE_HOST = "136.243.174.222"
+REMOTE_HOST = "hurryapps.com"
 REMOTE_USER = "hurryapps_admin"
 REMOTE_PASSWORD = "wdv4@Eq#!TPU"
 REMOTE_DATABASE_NAME = "hurryapps_admin_nvbktr7fbv"
@@ -15,6 +15,20 @@ LOCAL_HOST = ""
 LOCAL_USER = ""
 LOCAL_PASSWORD = ""
 LOCAL_DATABASE_NAME = ""
+
+def dump_table_structure(cursor, table_name):
+        # Retrieve the table structure using a SHOW CREATE TABLE query
+        query = f"SHOW CREATE TABLE {table_name}"
+        cursor.execute(query)
+
+        # Fetch the result
+        result = cursor.fetchone()
+
+        # The second element of the result contains the CREATE TABLE statement
+        create_table_statement = result[1]
+
+        print(f"Table structure for {table_name}:\n")
+        print(create_table_statement)
 
 
 try:
@@ -48,6 +62,8 @@ try:
 
     # Convert the list of tuples to a list of strings
     tables = [table[0] for table in tables]
+
+    dump_table_structure(cursor=cursor , table_name=tables[0])
 except mysql.connector.Error as err:
     print(f"Error: {err}")
 else:
